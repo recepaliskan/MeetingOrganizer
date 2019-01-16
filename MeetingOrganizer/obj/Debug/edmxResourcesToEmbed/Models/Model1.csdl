@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MeetingOrganizerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="tbl_Meeting">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Subject" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+    <NavigationProperty Name="tbl_MeetingParticipant" Relationship="Self.FK_tbl_MeetingParticipant_tbl_Meeting" FromRole="tbl_Meeting" ToRole="tbl_MeetingParticipant" />
+  </EntityType>
+  <EntityType Name="tbl_MeetingParticipant">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MeetingId" Type="Int32" Nullable="false" />
+    <Property Name="ParticipantId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tbl_Meeting" Relationship="Self.FK_tbl_MeetingParticipant_tbl_Meeting" FromRole="tbl_MeetingParticipant" ToRole="tbl_Meeting" />
+    <NavigationProperty Name="tbl_Participant" Relationship="Self.FK_tbl_MeetingParticipant_tbl_Participant" FromRole="tbl_MeetingParticipant" ToRole="tbl_Participant" />
+  </EntityType>
+  <EntityType Name="tbl_Participant">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="tbl_MeetingParticipant" Relationship="Self.FK_tbl_MeetingParticipant_tbl_Participant" FromRole="tbl_Participant" ToRole="tbl_MeetingParticipant" />
+  </EntityType>
+  <Association Name="FK_tbl_MeetingParticipant_tbl_Meeting">
+    <End Role="tbl_Meeting" Type="Self.tbl_Meeting" Multiplicity="1" />
+    <End Role="tbl_MeetingParticipant" Type="Self.tbl_MeetingParticipant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Meeting">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="tbl_MeetingParticipant">
+        <PropertyRef Name="MeetingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_MeetingParticipant_tbl_Participant">
+    <End Role="tbl_Participant" Type="Self.tbl_Participant" Multiplicity="1" />
+    <End Role="tbl_MeetingParticipant" Type="Self.tbl_MeetingParticipant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Participant">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="tbl_MeetingParticipant">
+        <PropertyRef Name="ParticipantId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MeetingOrganizerDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="tbl_Meeting" EntityType="Self.tbl_Meeting" />
+    <EntitySet Name="tbl_MeetingParticipant" EntityType="Self.tbl_MeetingParticipant" />
+    <EntitySet Name="tbl_Participant" EntityType="Self.tbl_Participant" />
+    <AssociationSet Name="FK_tbl_MeetingParticipant_tbl_Meeting" Association="Self.FK_tbl_MeetingParticipant_tbl_Meeting">
+      <End Role="tbl_Meeting" EntitySet="tbl_Meeting" />
+      <End Role="tbl_MeetingParticipant" EntitySet="tbl_MeetingParticipant" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_MeetingParticipant_tbl_Participant" Association="Self.FK_tbl_MeetingParticipant_tbl_Participant">
+      <End Role="tbl_Participant" EntitySet="tbl_Participant" />
+      <End Role="tbl_MeetingParticipant" EntitySet="tbl_MeetingParticipant" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
