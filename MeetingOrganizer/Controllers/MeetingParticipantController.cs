@@ -40,15 +40,23 @@ namespace MeetingOrganizer.Controllers
         [HttpPost]
         public ActionResult Add(tbl_MeetingParticipant AddParticipant, int id)
         {
+            try
+            {
+                AddParticipant.MeetingId = id;
+
+
+                db.tbl_MeetingParticipant.Add(AddParticipant);
+                db.SaveChanges();
+
+                return RedirectToAction("Index", "Meeting");
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
            
-
-            AddParticipant.MeetingId = id;
-
-
-            db.tbl_MeetingParticipant.Add(AddParticipant);
-            db.SaveChanges();
-
-            return RedirectToAction("Index","Meeting");
         }
 
 

@@ -28,9 +28,16 @@ namespace MeetingOrganizer.Controllers
         [HttpPost]
         public ActionResult Create(tbl_Participant Participant)
         {
-            db.tbl_Participant.Add(Participant);
-            db.SaveChanges();
-            return RedirectToAction("Index","Meeting");
+            try
+            {
+                db.tbl_Participant.Add(Participant);
+                db.SaveChanges();
+                return RedirectToAction("Index", "Meeting");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         

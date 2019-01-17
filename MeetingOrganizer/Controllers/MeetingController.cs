@@ -52,6 +52,7 @@ namespace MeetingOrganizer.Controllers
             try
             {
                 var meeting = db.tbl_Meeting.Where(m => m.ID == id).SingleOrDefault();
+
                 if (meeting == null)
                 {
                     return HttpNotFound();
@@ -65,9 +66,9 @@ namespace MeetingOrganizer.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                throw ex;
             }
 
         }
@@ -101,9 +102,9 @@ namespace MeetingOrganizer.Controllers
                 return RedirectToAction("Index");
 
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                throw ex;
             }
 
         }
